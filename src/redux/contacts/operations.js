@@ -1,7 +1,6 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
-axios.defaults.baseURL = 'https://63d7af3bafbba6b7c9420a5a.mockapi.io/';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 export const fetchContact = createAsyncThunk(
   'contacts/fetchAll',
@@ -16,9 +15,10 @@ export const fetchContact = createAsyncThunk(
 );
 export const addContact = createAsyncThunk(
   'contacts/addTask',
-  async ({ name, phone }, thunkAPI) => {
+  async ({ name, number }, thunkAPI) => {
     try {
-      const response = await axios.post('/contacts', { name, phone });
+      const response = await axios.post('/contacts', { name, number });
+      toast.success('Contact is added');
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -31,6 +31,7 @@ export const deleteContact = createAsyncThunk(
   async (taskId, thunkAPI) => {
     try {
       const response = await axios.delete(`/contacts/${taskId}`);
+      toast.success('Contact is deleted');
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
